@@ -1,7 +1,7 @@
 import os
 import openai
 import random
-openai.api_key = "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"
+openai.api_key = "API-nøkkelen er i chatten"
 
 prompts = [
 	"Gi meg et kort vers på seks linjer som rimer om hvor kul en person er, personen heter ",
