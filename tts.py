@@ -18,7 +18,7 @@ audio_config = texttospeech.AudioConfig(
 )
 
 def synthesize_speech (text):
-	print("Henter lydfil")
+	print("--- Henter lydfil ---")
 	synthesis_input = texttospeech.SynthesisInput(text=text)
 
 	response = client.synthesize_speech(
@@ -28,4 +28,4 @@ def synthesize_speech (text):
 	with open("output.mp3", "wb") as out:
 		# Write the response to the output file.
 		out.write(response.audio_content)
-		print('Lydfil lagret i "output.mp3"')
+		print('--- Lydfil lagret i "output.mp3" ---')

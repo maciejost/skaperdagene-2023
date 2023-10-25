@@ -47,7 +47,7 @@ people = [
 ]
 
 def get_name():
-	print("Henter navn")
+	print("--- Henter navn ---")
 	# Få svar fra "rfid"
 	# Sjekk om "rfid" er i people
 	# Hvis ja, returner navn
@@ -55,7 +55,7 @@ def get_name():
 
 
 def fetch_greeting(name):
-	print("Henter hilsen fra OpenAI")
+	print("--- Henter hilsen fra OpenAI ---")
 	prompt = random.choice(prompts) + name + "."
 	completion = openai.ChatCompletion.create(
 		model="gpt-3.5-turbo",
@@ -72,4 +72,4 @@ def main():
 import time
 start_time = time.time()
 main()
-print("--- %s seconds ---" % (time.time() - start_time))
+print("--- Det hele tok %s sekunder ---" % (time.time() - start_time))
