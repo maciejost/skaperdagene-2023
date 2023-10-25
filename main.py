@@ -1,6 +1,8 @@
 import os
 import openai
 import random
+from tts import synthesize_speech
+
 openai.api_key = "API-nøkkelen er i chatten"
 
 prompts = [
@@ -39,14 +41,14 @@ people = [
 	}
 ]
 
-def getName():
+def get_name():
 	# Få svar fra "rfid"
 	# Sjekk om "rfid" er i people
 	# Hvis ja, returner navn
-	return "Robbin"
+	return "Benedicte"
 
 
-def fetchGreeting(name):
+def fetch_greeting(name):
 	prompt = random.choice(prompts) + name + "."
 	completion = openai.ChatCompletion.create(
 		model="gpt-3.5-turbo",
@@ -56,5 +58,4 @@ def fetchGreeting(name):
 	)
 	return completion.choices[0].message.content
 
-
-print(fetchGreeting(getName()))
+synthesize_speech(fetch_greeting(get_name()))
