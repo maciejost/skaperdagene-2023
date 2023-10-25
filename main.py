@@ -3,7 +3,7 @@ import openai
 import random
 from tts import synthesize_speech
 
-openai.api_key = "API-nøkkelen er i chatten"
+openai.api_key = "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"
 
 prompts = [
 	"Gi meg et kort vers på seks linjer som rimer om hvor kul en person er, personen heter ",
@@ -45,7 +45,7 @@ def get_name():
 	# Få svar fra "rfid"
 	# Sjekk om "rfid" er i people
 	# Hvis ja, returner navn
-	return "Benedicte"
+	return "RobBin"
 
 
 def fetch_greeting(name):
@@ -58,4 +58,11 @@ def fetch_greeting(name):
 	)
 	return completion.choices[0].message.content
 
-synthesize_speech(fetch_greeting(get_name()))
+def main():
+	synthesize_speech(fetch_greeting(get_name()))
+
+# Måle hvor lang tid det tar å kjøre alt
+import time
+start_time = time.time()
+main()
+print("--- %s seconds ---" % (time.time() - start_time))
