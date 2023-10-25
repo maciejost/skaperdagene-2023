@@ -1,9 +1,14 @@
 import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
 import openai
 import random
+
 from tts import synthesize_speech
 
-openai.api_key = "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"
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 prompts = [
 	"Gi meg et kort vers på seks linjer som rimer om hvor kul en person er, personen heter ",
@@ -42,6 +47,7 @@ people = [
 ]
 
 def get_name():
+	print("Henter navn")
 	# Få svar fra "rfid"
 	# Sjekk om "rfid" er i people
 	# Hvis ja, returner navn
@@ -49,6 +55,7 @@ def get_name():
 
 
 def fetch_greeting(name):
+	print("Henter hilsen fra OpenAI")
 	prompt = random.choice(prompts) + name + "."
 	completion = openai.ChatCompletion.create(
 		model="gpt-3.5-turbo",
