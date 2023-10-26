@@ -5,8 +5,8 @@ from typing import Union
 import openai
 from dotenv import load_dotenv, find_dotenv
 
-from RobBin import personalities, prompts
-# from RobBin.tts import synthesize_speech
+import personalities, prompts
+# from tts import synthesize_speech
 
 load_dotenv(find_dotenv())
 
@@ -38,16 +38,6 @@ class User:
             self.preferred_personality = personalities.Personality.DEFAULT
         else:
             self.preferred_personality = preferred_personality
-
-users = [
-    User("Maciej", "1234567890", True, personalities.Personality.POETIC),
-    User("Harald", "4234234", False, personalities.Personality.KURT),
-    User("Karolina", "343558", False, personalities.Personality.FUNNY),
-    User("Mathias", "378756746", True, personalities.Personality.SASSY),
-    User("Torbjørn", "46732", False, personalities.Personality.POETIC),
-    User("Ragna", "457658583", True, personalities.Personality.POLITE),
-    User("Sindre", "23945875", True, personalities.Personality.TERSE),
-]
 
 
 class RobBin:
@@ -127,6 +117,7 @@ class RobBin:
     def play_message(self, content):
         mp3_path = self.get_mp3(content)
         print(content)
+        print("\n")
         # if platform.system() == "Darwin":
         #     # mac
         #     os.system("afplay " + mp3_path)
@@ -134,7 +125,15 @@ class RobBin:
         #     # linux
         #     os.system("mpg123 " + mp3_path)
 
-
+users = [
+    User("Maciej", "1234567890", True, personalities.Personality.POETIC),
+    User("Harald", "4234234", False, personalities.Personality.KURT),
+    User("Karolina", "343558", False, personalities.Personality.FUNNY),
+    User("Mathias", "378756746", True, personalities.Personality.SASSY),
+    User("Torbjørn", "46732", False, personalities.Personality.POETIC),
+    User("Ragna", "457658583", True, personalities.Personality.POLITE),
+    User("Sindre", "23945875", True, personalities.Personality.TERSE),
+]
 if __name__ == "__main__":
     bot = RobBin()
     bot.run(users[0], zone={"name": "Kontor A", "temperature": "19"})
