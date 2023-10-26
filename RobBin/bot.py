@@ -136,4 +136,4 @@ users = [
 ]
 if __name__ == "__main__":
     bot = RobBin()
-    bot.run(users[0], zone={"name": "Kontor A", "temperature": "19"})
+    bot.run(users[3], zone={"name": "Kontor A", "temperature": "19"})
