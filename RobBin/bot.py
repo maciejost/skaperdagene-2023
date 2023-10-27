@@ -41,12 +41,20 @@ class User:
 
 
 class RobBin:
-
+    IDLE = 1
+    MOVING = 2
+    BUSY = 3
+    TALKING = 4
+    OFF = -1
     def __init__(self):
         self.busy = False
         self.current_user = None
         self.conversation = []
 
+    def _send_state(self):
+        ...
+
+        
     def _add_user_prompt(self, prompt: str):
         self.conversation.append(
             {"role": "user", "content": prompt}
@@ -126,7 +134,7 @@ class RobBin:
 
 users = [
     User("Maciej", "1234567890", True, personalities.Personality.POETIC),
-    User("Harald", "4234234", False, personalities.Personality.KURT),
+    User("Harald", "4234234", False, personalities.Personality.POLITE),
     User("Karolina", "343558", False, personalities.Personality.FUNNY),
     User("Mathias", "378756746", True, personalities.Personality.SASSY),
     User("Torbjørn", "46732", False, personalities.Personality.POETIC),
