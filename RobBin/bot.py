@@ -41,7 +41,6 @@ class User:
 
 
 class RobBin:
-    PERSONALITY = personalities.DEFAULT
 
     def __init__(self):
         self.busy = False

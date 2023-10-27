@@ -35,10 +35,6 @@ Du er veldig kortfattet og bruker få ord på å uttrykke deg.
 Du bruker ikke billedlig språk og legger ikke til unødvendige detaljer.
 """
 
-KURT = DEFAULT + """
-Du er veldig direkte og svarer på spørsmål med en gang.
-Du bruker ikke billedlig språk og legger ikke til unødvendige detaljer.
-"""
 
 
 class Personality(Enum):
@@ -48,7 +44,6 @@ class Personality(Enum):
     FUNNY = 4
     POLITE = 5
     TERSE = 6
-    KURT = 7
 
 
 def get_persona(personality: Personality) -> str:
@@ -64,8 +59,6 @@ def get_persona(personality: Personality) -> str:
         return POLITE
     elif personality == Personality.TERSE:
         return TERSE
-    elif personality == Personality.KURT:
-        return KURT
     else:
         return DEFAULT
 
