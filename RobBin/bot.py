@@ -1,6 +1,8 @@
 import os
 import platform
 from typing import Union
+import requests
+import json
 
 import openai
 from dotenv import load_dotenv, find_dotenv
@@ -10,6 +12,18 @@ import personalities, prompts
 
 load_dotenv(find_dotenv())
 
+from google.cloud import texttospeech
+from playsound import playsound
+
+client = texttospeech.TextToSpeechClient()
+
+voice = texttospeech.VoiceSelectionParams(
+    language_code="no-NO", ssml_gender=texttospeech.SsmlVoiceGender.MALE
+)
+
+audio_config = texttospeech.AudioConfig(
+    audio_encoding=texttospeech.AudioEncoding.MP3
+)
 
 
 openai.api_key = os.environ.get("OPENAI_API_KEY")
@@ -46,15 +60,29 @@ class RobBin:
     BUSY = 3
     TALKING = 4
     OFF = -1
+    ESP32_URL = "http://4.3.2.1"
+
     def __init__(self):
+        self._send_state(self.IDLE)
         self.busy = False
         self.current_user = None
         self.conversation = []
 
-    def _send_state(self):
-        ...
+    def _send_state(self, state: int, on: bool = True, retries: int = 10):
+        attempt = 0
+        while True:
+            r = requests.post(
+                f"{self.ESP32_URL}/json/state",
+                data=json.dumps({"on": on, "ps": str(state)})
+            )
+            if r.status_code == 200:
+                break
+            else:
+                attempt += 1
 
-        
+            if attempt >= retries:
+                break
+
     def _add_user_prompt(self, prompt: str):
         self.conversation.append(
             {"role": "user", "content": prompt}
@@ -74,6 +102,7 @@ class RobBin:
     def run(self, user: User, zone: dict[str, str]):
         # runs when a users requests RobBin
         self.busy = True
+        self._send_state(self.BUSY)
         self.current_user = user
         persona = personalities.get_persona(user.preferred_personality)
         self.conversation = [{"role": "system", "content": persona}]
@@ -86,7 +115,9 @@ class RobBin:
 
         goodbye = self.say_goodbye(zone=zone)
         self.play_message(goodbye)
+        self._send_state(self.MOVING)
 
+        
     def greet_user(self):
         assert self.current_user is not None
 
@@ -118,13 +149,19 @@ class RobBin:
         return response
 
     def get_mp3(self, content) -> str:
-        ...
+        synthesis_input = texttospeech.SynthesisInput(text=content)
+        response = client.synthesize_speech(
+            input=synthesis_input, voice=voice, audio_config=audio_config
+        )
+        print("")
         # todo: call to synthesize_speech
 
     def play_message(self, content):
+        self._send_state(self.TALKING)
         mp3_path = self.get_mp3(content)
         print(content)
         print("\n")
+        self._send_state(self.IDLE)
         # if platform.system() == "Darwin":
         #     # mac
         #     os.system("afplay " + mp3_path)
